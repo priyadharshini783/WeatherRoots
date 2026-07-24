@@ -1,0 +1,40 @@
+<resources>
+
+    <string name="app_name">WeatherRoots</string>
+
+    <!-- Dashboard -->
+    <string name="weather_roots">WeatherRoots</string>
+    <string name="today_conditions">Today\'s Conditions</string>
+    <string name="humidity">Humidity</string>
+    <string name="wind">Wind</string>
+    <string name="rainfall">Rainfall</string>
+    <string name="weather_alerts">Weather Alerts</string>
+    <string name="no_severe_weather_alerts">No Severe Weather Alerts</string>
+
+    <string name="stable_weather_message">
+        Current weather conditions appear stable for normal farming activities.
+    </string>
+
+    <string name="farming_weather_insight">Farming Weather Insight</string>
+
+    <string name="normal_farming_conditions">
+        Current weather conditions appear generally suitable for normal farming activities.
+    </string>
+
+    <string name="live_weather">Live weather</string>
+
+    <string name="get_crop_recommendation">
+        Get Crop Recommendation
+    </string>
+
+    <string name="fetching_live_weather">
+        Fetching live weather...
+    </string>
+
+    <string name="unable_to_load_weather">
+        Unable to load weather
+    </string>
+
+    <string name="retry">Retry</string>
+
+</resources>

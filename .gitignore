@@ -1,0 +1,22 @@
+# Gradle generated files
+.gradle/
+**/build/
+
+# Local machine configuration
+local.properties
+secrets.properties
+
+# Android Studio
+.idea/
+*.iml
+
+# Native build files
+.externalNativeBuild/
+.cxx/
+
+# Captures
+captures/
+
+# Operating system files
+.DS_Store
+Thumbs.db
