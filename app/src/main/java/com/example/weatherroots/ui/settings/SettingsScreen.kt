@@ -1,6 +1,7 @@
 package com.example.weatherroots.ui.settings
 
-
+import androidx.compose.ui.platform.LocalContext
+import com.example.weatherroots.ui.language.AppLanguageManager
 import com.google.firebase.auth.FirebaseAuth
 
 import android.app.Activity
@@ -34,16 +35,14 @@ import com.example.weatherroots.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-
     onNavigateBack: () -> Unit,
-
     onLogout: () -> Unit,
-
     onOpenProfile: () -> Unit,
-
     modifier: Modifier = Modifier
-
 ) {
+
+
+    val context = LocalContext.current
 
 
     val selectedLanguageCode =
@@ -197,14 +196,12 @@ fun SettingsScreen(
 
                 onLanguageSelected = { languageCode ->
 
-                    val localeList =
-                        LocaleListCompat.forLanguageTags(
-                            languageCode
-                        )
 
-                    AppCompatDelegate.setApplicationLocales(
-                        localeList
+                    AppLanguageManager.setLanguage(
+                        context = context,
+                        languageCode = languageCode
                     )
+
 
                 }
 
