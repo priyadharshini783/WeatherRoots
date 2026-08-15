@@ -1,6 +1,6 @@
 package com.example.weatherroots.ui.voiceassistant
 import androidx.compose.ui.graphics.graphicsLayer
-
+import com.example.weatherroots.ui.voiceassistant.VoiceResponseEngine
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -30,6 +30,11 @@ fun VoiceAssistantScreen(
     onNavigateBack: () -> Unit
 
 ) {
+    var assistantResponse by remember {
+
+        mutableStateOf("")
+
+    }
 
 
     val context = LocalContext.current
@@ -543,7 +548,7 @@ fun VoiceAssistantScreen(
 
 
 
-                            question = englishText
+                            question = nativeText
 
 
 
@@ -702,8 +707,7 @@ fun VoiceAssistantScreen(
 
 
                 response =
-
-                    "Rain is expected tomorrow. Avoid irrigation."
+                    VoiceResponseEngine.getResponse(question)
 
 
             },
@@ -852,28 +856,21 @@ fun VoiceAssistantScreen(
 
 
                     scope.launch {
+                        val voiceResponse =
+                            translationManager.translateFromEnglish(
+                                response,
+                                selectedLanguage
+                            )
 
 
 
-                        val translatedVoice =
 
-
-                            translationManager
-
-                                .translateFromEnglish(
-
-                                    response,
-
-                                    selectedLanguage
-
-                                )
 
 
 
 
                         ttsManager.speak(
-
-                            translatedVoice,
+                            response,
 
                             selectedLanguage
 
