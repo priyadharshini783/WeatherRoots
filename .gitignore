@@ -20,3 +20,5 @@ captures/
 # Operating system files
 .DS_Store
 Thumbs.db
+# Firebase
+app/google-services.json

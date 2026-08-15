@@ -1,5 +1,5 @@
 package com.example.weatherroots.ui.settings
-
+import com.google.firebase.auth.FirebaseAuth
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable 
 import androidx.compose.foundation.layout.Arrangement
@@ -46,6 +46,8 @@ import androidx.core.os.LocaleListCompat
 @Composable
 fun SettingsScreen(
     onNavigateBack: () -> Unit,
+    onLogout: () -> Unit,
+    onOpenProfile: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     /*
@@ -74,9 +76,9 @@ fun SettingsScreen(
      * Later this will come from Firebase Authentication or another
      * authentication service.
      */
-    var isLoggedIn by rememberSaveable {
-        mutableStateOf(false)
-    }
+    val currentUser = FirebaseAuth.getInstance().currentUser
+
+    val isLoggedIn = currentUser != null
 
     Scaffold(
         modifier = modifier,
@@ -142,18 +144,32 @@ fun SettingsScreen(
                     }
                 }
             )
-
             AccountSettingsCard(
                 isLoggedIn = isLoggedIn,
+
                 onLoginClick = {
-                    // Mock login for UI development.
-                    isLoggedIn = true
+                    // Navigate to Login screen later
                 },
+
                 onLogoutClick = {
-                    // Mock logout for UI development.
-                    isLoggedIn = false
+
+                    FirebaseAuth
+                        .getInstance()
+                        .signOut()
+
+                    onLogout()
+
+                },
+
+                onOpenProfile = {
+
+                    onOpenProfile()
+
                 }
             )
+
+
+
 
             AppInformationCard()
 
@@ -396,7 +412,8 @@ private fun LanguageOptionRow(
 private fun AccountSettingsCard(
     isLoggedIn: Boolean,
     onLoginClick: () -> Unit,
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
+    onOpenProfile: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -423,8 +440,8 @@ private fun AccountSettingsCard(
 
             if (isLoggedIn) {
                 LoggedInAccountContent(
-                    onLogoutClick =
-                        onLogoutClick
+                    onLogoutClick = onLogoutClick,
+                    onOpenProfile = onOpenProfile
                 )
             } else {
                 LoggedOutAccountContent(
@@ -439,7 +456,8 @@ private fun AccountSettingsCard(
 
 @Composable
 private fun LoggedInAccountContent(
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
+    onOpenProfile: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -480,6 +498,18 @@ private fun LoggedInAccountContent(
                 )
             }
         }
+    }
+    Button(
+        onClick = onOpenProfile,
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+
+        Text(
+            text = "Edit Farmer Profile",
+            fontWeight = FontWeight.Bold
+        )
+
     }
 
     OutlinedButton(
