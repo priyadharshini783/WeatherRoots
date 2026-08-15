@@ -1,40 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <resources>
 
+    <!-- App -->
     <string name="app_name">WeatherRoots</string>
+
+
+    <!-- Common -->
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+    <string name="language">Language</string>
+    <string name="select_language">Select Language</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="back">Back</string>
+    <!-- Dashboard Extra Text -->
+
+    <string name="good_morning_farmer">Good Morning Farmer 👨‍🌾</string>
+
+    <string name="farming_weather_update">
+    Here is your farming weather update
+</string>
+
+    <string name="quick_actions">
+    Quick Actions
+</string>
+
+    <string name="crop_status">
+    Crop Status
+</string>
+
+    <string name="good">
+    Good
+</string>
+
+    <string name="ai_assistant">
+    AI Assistant
+</string>
+
+    <string name="crop_advice">
+    Crop Advice
+</string>
+
+    <string name="live_weather_update">
+    Live Weather Update
+</string>
+
+    <string name="farming_insight">
+    Farming Insight
+</string>
+
+    <string name="weather_conditions_good">
+    Weather conditions are good for farming.
+</string>
+
+    <string name="something_wrong">
+    Something went wrong
+</string>
+
+
+    <!-- Account -->
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+
+
+    <!-- About -->
+    <string name="about">About WeatherRoots</string>
+    <string name="app_description">AI powered farming assistant providing weather insights, crop recommendations and voice support for farmers.</string>
+    <string name="version">Version</string>
+
 
     <!-- Dashboard -->
     <string name="weather_roots">WeatherRoots</string>
-    <string name="today_conditions">Today\'s Conditions</string>
+    <string name="today_conditions">Today Conditions</string>
     <string name="humidity">Humidity</string>
     <string name="wind">Wind</string>
     <string name="rainfall">Rainfall</string>
+    <string name="temperature">Temperature</string>
+
     <string name="weather_alerts">Weather Alerts</string>
     <string name="no_severe_weather_alerts">No Severe Weather Alerts</string>
 
-    <string name="stable_weather_message">
-        Current weather conditions appear stable for normal farming activities.
-    </string>
+    <string name="stable_weather_message">Current weather conditions appear stable for normal farming activities.</string>
 
     <string name="farming_weather_insight">Farming Weather Insight</string>
 
-    <string name="normal_farming_conditions">
-        Current weather conditions appear generally suitable for normal farming activities.
-    </string>
+    <string name="normal_farming_conditions">Current weather conditions appear generally suitable for normal farming activities.</string>
 
-    <string name="live_weather">Live weather</string>
+    <string name="live_weather">Live Weather</string>
 
-    <string name="get_crop_recommendation">
-        Get Crop Recommendation
-    </string>
+    <string name="fetching_live_weather">Fetching live weather</string>
 
-    <string name="fetching_live_weather">
-        Fetching live weather...
-    </string>
-
-    <string name="unable_to_load_weather">
-        Unable to load weather
-    </string>
+    <string name="unable_to_load_weather">Unable to load weather</string>
 
     <string name="retry">Retry</string>
+
+
+    <!-- Crop Recommendation -->
+    <string name="crop_recommendation">Crop Recommendation</string>
+
+    <string name="get_crop_recommendation">Get Crop Recommendation</string>
+
+
+    <!-- Voice Assistant -->
+    <string name="voice_assistant">Voice Assistant</string>
+
+    <string name="weather_ai_assistant">WeatherRoots AI Assistant</string>
+
+    <string name="select_farmer_language">Select Farmer Language</string>
+
+    <string name="speak_now">Speak Now</string>
+
+    <string name="type_your_question">Type your question</string>
+
+    <string name="ask_ai">Ask AI</string>
+
+    <string name="english_response">English Response</string>
+
+    <string name="play_voice_response">Play Voice Response</string>
+
+
+    <!-- Settings -->
+    <string name="app_settings">App Settings</string>
+
+    <string name="choose_language">Choose Language</string>
+
+
+    <!-- Language Names -->
+    <string name="english">English</string>
+
+    <string name="tamil">Tamil</string>
+
+    <string name="hindi">Hindi</string>
+
+    <string name="telugu">Telugu</string>
+
 
 </resources>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="app_name">WeatherRoots</string>
+
+
+    <string name="home">முகப்பு</string>
+    <string name="profile">சுயவிவரம்</string>
+    <string name="settings">அமைப்புகள்</string>
+    <string name="language">மொழி</string>
+    <string name="select_language">மொழியைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="save">சேமிக்கவும்</string>
+    <string name="cancel">ரத்து செய்</string>
+    <string name="ok">சரி</string>
+    <string name="back">பின்</string>
+
+
+    <string name="login">உள்நுழைவு</string>
+    <string name="logout">வெளியேறு</string>
+
+
+    <string name="about">WeatherRoots பற்றி</string>
+
+    <string name="app_description">விவசாயிகளுக்கான வானிலை தகவல், பயிர் பரிந்துரை மற்றும் குரல் உதவியை வழங்கும் AI விவசாய உதவியாளர்.</string>
+
+    <string name="version">பதிப்பு</string>
+
+
+    <string name="weather_roots">WeatherRoots</string>
+
+    <string name="today_conditions">இன்றைய வானிலை நிலை</string>
+
+    <string name="humidity">ஈரப்பதம்</string>
+
+    <string name="wind">காற்று</string>
+
+    <string name="rainfall">மழைப்பொழிவு</string>
+
+    <string name="temperature">வெப்பநிலை</string>
+
+    <string name="weather_alerts">வானிலை எச்சரிக்கைகள்</string>
+
+    <string name="no_severe_weather_alerts">கடுமையான வானிலை எச்சரிக்கைகள் இல்லை</string>
+
+
+    <string name="stable_weather_message">தற்போதைய வானிலை நிலை சாதாரண விவசாய நடவடிக்கைகளுக்கு ஏற்றதாக உள்ளது.</string>
+
+
+    <string name="farming_weather_insight">விவசாய வானிலை தகவல்</string>
+
+
+    <string name="normal_farming_conditions">தற்போதைய வானிலை நிலை சாதாரண விவசாய நடவடிக்கைகளுக்கு ஏற்றதாக உள்ளது.</string>
+
+
+    <string name="live_weather">நேரடி வானிலை</string>
+
+
+    <string name="fetching_live_weather">நேரடி வானிலை தகவல் பெறப்படுகிறது</string>
+
+
+    <string name="unable_to_load_weather">வானிலை தகவலை ஏற்ற முடியவில்லை</string>
+
+
+    <string name="retry">மீண்டும் முயற்சிக்கவும்</string>
+
+
+
+    <string name="crop_recommendation">பயிர் பரிந்துரை</string>
+
+
+    <string name="get_crop_recommendation">பயிர் பரிந்துரையைப் பெறுங்கள்</string>
+
+
+
+    <string name="voice_assistant">குரல் உதவியாளர்</string>
+
+
+    <string name="weather_ai_assistant">WeatherRoots AI உதவியாளர்</string>
+
+
+    <string name="select_farmer_language">விவசாயி மொழியைத் தேர்ந்தெடுக்கவும்</string>
+
+
+    <string name="speak_now">பேசவும்</string>
+
+
+    <string name="type_your_question">உங்கள் கேள்வியை உள்ளிடவும்</string>
+
+
+    <string name="ask_ai">AI யிடம் கேளுங்கள்</string>
+
+
+    <string name="english_response">ஆங்கில பதில்</string>
+
+
+    <string name="play_voice_response">குரல் பதிலை இயக்கவும்</string>
+
+
+
+    <string name="app_settings">செயலி அமைப்புகள்</string>
+
+
+    <string name="choose_language">மொழியைத் தேர்ந்தெடுக்கவும்</string>
+
+
+
+    <string name="english">ஆங்கிலம்</string>
+
+
+    <string name="tamil">தமிழ்</string>
+
+
+    <string name="hindi">இந்தி</string>
+
+
+    <string name="telugu">தெலுங்கு</string>
+    <string name="good_morning_farmer">காலை வணக்கம் விவசாயி 👨‍🌾</string>
+
+    <string name="farming_weather_update">
+உங்கள் விவசாய வானிலை தகவல்
+</string>
+
+    <string name="quick_actions">
+விரைவு செயல்கள்
+</string>
+
+    <string name="crop_status">
+பயிர் நிலை
+</string>
+
+    <string name="good">
+நல்லது
+</string>
+
+    <string name="ai_assistant">
+AI உதவியாளர்
+</string>
+
+    <string name="crop_advice">
+பயிர் ஆலோசனை
+</string>
+
+    <string name="live_weather_update">
+நேரடி வானிலை தகவல்
+</string>
+
+    <string name="farming_insight">
+விவசாய தகவல்
+</string>
+
+    <string name="weather_conditions_good">
+வானிலை நிலை விவசாயத்திற்கு ஏற்றதாக உள்ளது.
+</string>
+
+    <string name="something_wrong">
+ஏதோ தவறு ஏற்பட்டது
+</string>
+
+
+</resources>

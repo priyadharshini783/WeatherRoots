@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="app_name">WeatherRoots</string>
+
+    <string name="home">హోమ్</string>
+    <string name="profile">ప్రొఫైల్</string>
+    <string name="settings">సెట్టింగ్స్</string>
+    <string name="language">భాష</string>
+    <string name="select_language">భాషను ఎంచుకోండి</string>
+    <string name="save">సేవ్ చేయండి</string>
+    <string name="cancel">రద్దు చేయండి</string>
+    <string name="ok">సరే</string>
+    <string name="back">వెనుకకు</string>
+
+    <string name="login">లాగిన్</string>
+    <string name="logout">లాగ్ అవుట్</string>
+
+    <string name="about">WeatherRoots గురించి</string>
+    <string name="app_description">రైతులకు వాతావరణ సమాచారం, పంట సిఫార్సులు మరియు వాయిస్ సహాయం అందించే AI వ్యవసాయ సహాయకుడు.</string>
+    <string name="version">వెర్షన్</string>
+
+    <string name="weather_roots">వెదర్‌రూట్స్</string>
+    <string name="today_conditions">ఈ రోజు వాతావరణ పరిస్థితులు</string>
+
+    <string name="humidity">తేమ</string>
+    <string name="wind">గాలి</string>
+    <string name="rainfall">వర్షపాతం</string>
+    <string name="temperature">ఉష్ణోగ్రత</string>
+
+    <string name="weather_alerts">వాతావరణ హెచ్చరికలు</string>
+    <string name="no_severe_weather_alerts">తీవ్రమైన వాతావరణ హెచ్చరికలు లేవు</string>
+
+    <string name="stable_weather_message">ప్రస్తుత వాతావరణ పరిస్థితులు సాధారణ వ్యవసాయ కార్యకలాపాలకు అనుకూలంగా ఉన్నాయి.</string>
+
+    <string name="farming_weather_insight">వ్యవసాయ వాతావరణ సమాచారం</string>
+
+    <string name="normal_farming_conditions">ప్రస్తుత వాతావరణ పరిస్థితులు సాధారణ వ్యవసాయ కార్యకలాపాలకు అనుకూలంగా ఉన్నాయి.</string>
+
+    <string name="live_weather">ప్రత్యక్ష వాతావరణం</string>
+
+    <string name="fetching_live_weather">ప్రత్యక్ష వాతావరణ సమాచారాన్ని పొందుతోంది</string>
+
+    <string name="unable_to_load_weather">వాతావరణ సమాచారాన్ని లోడ్ చేయడం సాధ్యం కాలేదు</string>
+
+    <string name="retry">మళ్లీ ప్రయత్నించండి</string>
+
+    <string name="crop_recommendation">పంట సిఫార్సు</string>
+
+    <string name="get_crop_recommendation">పంట సిఫార్సు పొందండి</string>
+
+    <string name="voice_assistant">వాయిస్ అసిస్టెంట్</string>
+
+    <string name="weather_ai_assistant">WeatherRoots AI అసిస్టెంట్</string>
+
+    <string name="select_farmer_language">రైతు భాషను ఎంచుకోండి</string>
+
+    <string name="speak_now">మాట్లాడండి</string>
+
+    <string name="type_your_question">మీ ప్రశ్నను టైప్ చేయండి</string>
+
+    <string name="ask_ai">AI ని అడగండి</string>
+
+    <string name="english_response">ఆంగ్ల సమాధానం</string>
+
+    <string name="play_voice_response">వాయిస్ సమాధానం ప్లే చేయండి</string>
+
+    <string name="app_settings">యాప్ సెట్టింగ్స్</string>
+
+    <string name="choose_language">భాషను ఎంచుకోండి</string>
+
+    <string name="english">ఇంగ్లీష్</string>
+
+    <string name="tamil">తమిళం</string>
+
+    <string name="hindi">హిందీ</string>
+    <string name="good_morning_farmer">శుభోదయం రైతు 👨‍🌾</string>
+
+    <string name="farming_weather_update">
+మీ వ్యవసాయ వాతావరణ సమాచారం
+</string>
+
+    <string name="quick_actions">
+త్వరిత చర్యలు
+</string>
+
+    <string name="crop_status">
+పంట స్థితి
+</string>
+
+    <string name="good">
+మంచిది
+</string>
+
+    <string name="ai_assistant">
+AI సహాయకుడు
+</string>
+
+    <string name="crop_advice">
+పంట సలహా
+</string>
+
+    <string name="live_weather_update">
+ప్రత్యక్ష వాతావరణ సమాచారం
+</string>
+
+    <string name="farming_insight">
+వ్యవసాయ సమాచారం
+</string>
+
+    <string name="weather_conditions_good">
+వాతావరణ పరిస్థితులు వ్యవసాయానికి అనుకూలంగా ఉన్నాయి.
+</string>
+
+    <string name="something_wrong">
+ఏదో తప్పు జరిగింది
+</string>
+
+    <string name="telugu">తెలుగు</string>
+
+</resources>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="app_name">WeatherRoots</string>
+
+    <string name="home">होम</string>
+    <string name="profile">प्रोफ़ाइल</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="language">भाषा</string>
+    <string name="select_language">भाषा चुनें</string>
+    <string name="save">सहेजें</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="ok">ठीक है</string>
+    <string name="back">पीछे जाएं</string>
+
+    <string name="login">लॉगिन</string>
+    <string name="logout">लॉगआउट</string>
+
+    <string name="about">WeatherRoots के बारे में</string>
+
+    <string name="app_description">किसानों के लिए मौसम जानकारी, फसल अनुशंसा और वॉइस सहायता प्रदान करने वाला AI कृषि सहायक।</string>
+
+    <string name="version">संस्करण</string>
+
+
+    <string name="weather_roots">WeatherRoots</string>
+
+    <string name="today_conditions">आज की मौसम स्थिति</string>
+
+    <string name="humidity">नमी</string>
+
+    <string name="wind">हवा</string>
+
+    <string name="rainfall">वर्षा</string>
+
+    <string name="temperature">तापमान</string>
+
+    <string name="weather_alerts">मौसम चेतावनी</string>
+
+    <string name="no_severe_weather_alerts">कोई गंभीर मौसम चेतावनी नहीं है</string>
+
+    <string name="stable_weather_message">वर्तमान मौसम की स्थिति सामान्य कृषि गतिविधियों के लिए स्थिर दिखाई देती है।</string>
+
+    <string name="farming_weather_insight">कृषि मौसम जानकारी</string>
+
+    <string name="normal_farming_conditions">वर्तमान मौसम की स्थिति सामान्य कृषि गतिविधियों के लिए उपयुक्त है।</string>
+
+    <string name="live_weather">लाइव मौसम</string>
+
+    <string name="fetching_live_weather">लाइव मौसम जानकारी प्राप्त की जा रही है</string>
+
+    <string name="unable_to_load_weather">मौसम जानकारी लोड करने में असमर्थ</string>
+
+    <string name="retry">पुनः प्रयास करें</string>
+
+
+    <string name="crop_recommendation">फसल अनुशंसा</string>
+
+    <string name="get_crop_recommendation">फसल अनुशंसा प्राप्त करें</string>
+
+
+    <string name="voice_assistant">वॉइस सहायक</string>
+
+    <string name="weather_ai_assistant">WeatherRoots AI सहायक</string>
+
+    <string name="select_farmer_language">किसान भाषा चुनें</string>
+
+    <string name="speak_now">अभी बोलें</string>
+
+    <string name="type_your_question">अपना प्रश्न लिखें</string>
+
+    <string name="ask_ai">AI से पूछें</string>
+
+    <string name="english_response">अंग्रेज़ी उत्तर</string>
+
+    <string name="play_voice_response">वॉइस उत्तर चलाएं</string>
+    <string name="good_morning_farmer">सुप्रभात किसान 👨‍🌾</string>
+
+    <string name="farming_weather_update">
+आपके लिए कृषि मौसम जानकारी
+</string>
+
+    <string name="quick_actions">
+त्वरित कार्य
+</string>
+
+    <string name="crop_status">
+फसल स्थिति
+</string>
+
+    <string name="good">
+अच्छा
+</string>
+
+    <string name="ai_assistant">
+AI सहायक
+</string>
+
+    <string name="crop_advice">
+फसल सलाह
+</string>
+
+    <string name="live_weather_update">
+लाइव मौसम जानकारी
+</string>
+
+    <string name="farming_insight">
+कृषि जानकारी
+</string>
+
+    <string name="weather_conditions_good">
+मौसम की स्थिति खेती के लिए अच्छी है।
+</string>
+
+    <string name="something_wrong">
+कुछ गलत हो गया
+</string>
+
+
+    <string name="app_settings">ऐप सेटिंग्स</string>
+
+    <string name="choose_language">भाषा चुनें</string>
+
+
+    <string name="english">अंग्रेज़ी</string>
+
+    <string name="tamil">तमिल</string>
+
+    <string name="hindi">हिंदी</string>
+
+    <string name="telugu">तेलुगु</string>
+
+</resources>
