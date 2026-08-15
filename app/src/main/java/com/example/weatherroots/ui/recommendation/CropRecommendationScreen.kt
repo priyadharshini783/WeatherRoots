@@ -42,8 +42,10 @@ fun CropRecommendationScreen(
     }
 
 
-    var showResult by remember {
-        mutableStateOf(false)
+    var recommendationResult by remember {
+
+        mutableStateOf<CropRecommendationResult?>(null)
+
     }
 
 
@@ -246,7 +248,7 @@ fun CropRecommendationScreen(
                 onSoilSelected = {
 
                     soilType = it
-                    showResult = false
+                    recommendationResult = null
 
                 },
 
@@ -256,7 +258,7 @@ fun CropRecommendationScreen(
                 onWaterSelected = {
 
                     waterAvailability = it
-                    showResult = false
+                    recommendationResult = null
 
                 },
 
@@ -266,7 +268,7 @@ fun CropRecommendationScreen(
                 onCropSelected = {
 
                     previousCrop = it
-                    showResult = false
+                    recommendationResult = null
 
                 },
 
@@ -276,7 +278,7 @@ fun CropRecommendationScreen(
                 onSeasonSelected = {
 
                     season = it
-                    showResult = false
+                    recommendationResult = null
 
                 }
 
@@ -290,25 +292,30 @@ fun CropRecommendationScreen(
 
                 onClick = {
 
-                    showResult = true
+                    recommendationResult =
+                        CropRecommendationEngine.getRecommendation(
+
+                            soil = soilType,
+
+                            water = waterAvailability,
+
+                            previousCrop = previousCrop,
+
+                            season = season
+
+                        )
 
                 },
 
-
                 enabled = isFormValid,
 
-
                 modifier = Modifier
-
                     .fillMaxWidth()
-
                     .height(56.dp),
-
 
                 shape = RoundedCornerShape(14.dp)
 
             ) {
-
 
                 Text(
 
@@ -320,8 +327,10 @@ fun CropRecommendationScreen(
 
                 )
 
-
             }
+
+
+
 
 
         }
@@ -330,17 +339,22 @@ fun CropRecommendationScreen(
 
 
 
-    if(showResult){
+    if(recommendationResult != null){
+
 
         RecommendationResultDialog(
 
+            result = recommendationResult!!,
+
+
             onDismiss = {
 
-                showResult = false
+                recommendationResult = null
 
             }
 
         )
+
 
     }
 
@@ -719,9 +733,11 @@ private fun FarmerDropdown(
 @Composable
 private fun RecommendationResultDialog(
 
+    result: CropRecommendationResult,
+
     onDismiss: () -> Unit
 
-) {
+){
 
 
     AlertDialog(
@@ -766,7 +782,7 @@ private fun RecommendationResultDialog(
 
                 Text(
 
-                    text = "🌾 Rice",
+                    text = result.cropName,
 
                     fontSize = 28.sp,
 
@@ -784,13 +800,8 @@ private fun RecommendationResultDialog(
 
                 Text(
 
-                    "Reason:\n" +
-
-                            "✓ Suitable weather condition\n" +
-
-                            "✓ Water availability matches\n" +
-
-                            "✓ Season is favourable"
+                    "Reason:\n${result.reason}\n\n" +
+                            "Advice:\n${result.advice}"
 
                 )
 
