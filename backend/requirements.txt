@@ -1,0 +1,24 @@
+fastapi
+uvicorn
+pydantic
+
+# Language detection
+langdetect
+
+# Multilingual translation
+deep-translator
+
+# AI Embeddings
+sentence-transformers
+
+# Vector database for RAG
+faiss-cpu
+
+# Numerical operations
+numpy
+
+# Gemini LLM Integration
+google-genai
+
+# Environment variables (.env)
+python-dotenv

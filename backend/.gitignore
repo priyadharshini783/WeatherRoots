@@ -1,0 +1,51 @@
+# ==========================================
+# WeatherRoots AI Backend - Git Ignore
+# ==========================================
+
+# Environment variables / API keys
+.env
+.env.*
+!.env.example
+
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python build files
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE / Editor files
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Local model/cache files
+.cache/
+
+# FAISS generated index files
+*.faiss
+*.index
