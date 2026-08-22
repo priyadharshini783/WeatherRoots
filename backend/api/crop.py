@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field
 
 from services.crop_suitability import recommend_crops
 from services.crop_advice import generate_crop_advice
+from services.climate_service import get_tamil_nadu_annual_rainfall
 
 
 router = APIRouter(
@@ -10,6 +11,10 @@ router = APIRouter(
     tags=["Crop Recommendation"]
 )
 
+
+# ============================================================
+# Request Model
+# ============================================================
 
 class CropRecommendationRequest(BaseModel):
 
@@ -23,6 +28,7 @@ class CropRecommendationRequest(BaseModel):
         le=100
     )
 
+    # Current / recent rainfall from Android weather API
     rainfall: float = Field(
         ge=0
     )
@@ -36,11 +42,20 @@ class CropRecommendationRequest(BaseModel):
     season: str
 
 
+# ============================================================
+# Alternative Crop Model
+# ============================================================
+
 class AlternativeCrop(BaseModel):
 
     crop: str
+
     suitability_score: float
 
+
+# ============================================================
+# Response Model
+# ============================================================
 
 class CropRecommendationResponse(BaseModel):
 
@@ -52,6 +67,16 @@ class CropRecommendationResponse(BaseModel):
 
     explanation: str
 
+    current_rainfall: float
+
+    climate_rainfall: float
+
+    rainfall_source: str
+
+
+# ============================================================
+# Crop Recommendation Endpoint
+# ============================================================
 
 @router.post(
     "/recommend",
@@ -63,10 +88,77 @@ def recommend_crop(
 
     try:
 
-        # -------------------------------------------------
+        # ----------------------------------------------------
         # STEP 1
-        # Calculate crop suitability
-        # -------------------------------------------------
+        # Current rainfall received from Android / weather API
+        # ----------------------------------------------------
+
+        current_rainfall = request.rainfall
+
+
+        # ----------------------------------------------------
+        # STEP 2
+        # Historical Tamil Nadu annual rainfall from IMD data
+        # ----------------------------------------------------
+
+        climate_rainfall = (
+            get_tamil_nadu_annual_rainfall()
+        )
+
+
+        print("\n======================================")
+        print("WeatherRoots Crop Recommendation")
+        print("======================================")
+
+        print(
+            f"Temperature: "
+            f"{request.temperature} °C"
+        )
+
+        print(
+            f"Humidity: "
+            f"{request.humidity} %"
+        )
+
+        print(
+            f"Current rainfall: "
+            f"{current_rainfall} mm"
+        )
+
+        print(
+            f"Climate rainfall: "
+            f"{climate_rainfall} mm"
+        )
+
+        print(
+            f"Soil type: "
+            f"{request.soil_type}"
+        )
+
+        print(
+            f"Water availability: "
+            f"{request.water_availability}"
+        )
+
+        print(
+            f"Previous crop: "
+            f"{request.previous_crop}"
+        )
+
+        print(
+            f"Season: "
+            f"{request.season}"
+        )
+
+
+        # ----------------------------------------------------
+        # STEP 3
+        # Crop suitability calculation
+        #
+        # IMPORTANT:
+        # Use climate rainfall here.
+        # Do NOT use today's/current rainfall.
+        # ----------------------------------------------------
 
         results = recommend_crops(
 
@@ -74,15 +166,19 @@ def recommend_crop(
 
             humidity=request.humidity,
 
-            rainfall=request.rainfall,
+            rainfall=climate_rainfall,
 
-            soil_type=request.soil_type.strip(),
+            soil_type=(
+                request.soil_type.strip()
+            ),
 
             water_availability=(
                 request.water_availability.strip()
             ),
 
-            season=request.season.strip(),
+            season=(
+                request.season.strip()
+            ),
 
             top_k=3
         )
@@ -95,50 +191,71 @@ def recommend_crop(
             )
 
 
-        # -------------------------------------------------
-        # STEP 2
+        # ----------------------------------------------------
+        # STEP 4
         # Best crop
-        # -------------------------------------------------
+        # ----------------------------------------------------
 
         best_crop = results[0]
 
-        recommended_crop = best_crop["crop"]
+        recommended_crop = (
+            best_crop["crop"]
+        )
 
-        suitability_score = best_crop["score"]
+        suitability_score = (
+            best_crop["score"]
+        )
 
 
-        # -------------------------------------------------
-        # STEP 3
+        # ----------------------------------------------------
+        # STEP 5
         # Alternative crops
-        # -------------------------------------------------
+        # ----------------------------------------------------
 
         alternatives = [
 
             AlternativeCrop(
+
                 crop=item["crop"],
-                suitability_score=item["score"]
+
+                suitability_score=(
+                    item["score"]
+                )
             )
 
             for item in results[1:]
         ]
 
 
-        # -------------------------------------------------
-        # STEP 4
+        # ----------------------------------------------------
+        # STEP 6
         # Gemini explanation
-        # -------------------------------------------------
+        #
+        # Give Gemini climate rainfall,
+        # not current rainfall.
+        # ----------------------------------------------------
 
         explanation = generate_crop_advice(
 
-            recommended_crop=recommended_crop,
+            recommended_crop=(
+                recommended_crop
+            ),
 
-            temperature=request.temperature,
+            temperature=(
+                request.temperature
+            ),
 
-            humidity=request.humidity,
+            humidity=(
+                request.humidity
+            ),
 
-            rainfall=request.rainfall,
+            rainfall=(
+                climate_rainfall
+            ),
 
-            soil_type=request.soil_type.strip(),
+            soil_type=(
+                request.soil_type.strip()
+            ),
 
             water_availability=(
                 request.water_availability.strip()
@@ -148,24 +265,47 @@ def recommend_crop(
                 request.previous_crop.strip()
             ),
 
-            season=request.season.strip()
+            season=(
+                request.season.strip()
+            )
         )
 
 
-        # -------------------------------------------------
-        # STEP 5
-        # Response
-        # -------------------------------------------------
+        # ----------------------------------------------------
+        # STEP 7
+        # Final response
+        # ----------------------------------------------------
 
         return CropRecommendationResponse(
 
-            recommended_crop=recommended_crop,
+            recommended_crop=(
+                recommended_crop
+            ),
 
-            suitability_score=suitability_score,
+            suitability_score=(
+                suitability_score
+            ),
 
-            alternatives=alternatives,
+            alternatives=(
+                alternatives
+            ),
 
-            explanation=explanation
+            explanation=(
+                explanation
+            ),
+
+            current_rainfall=(
+                current_rainfall
+            ),
+
+            climate_rainfall=(
+                climate_rainfall
+            ),
+
+            rainfall_source=(
+                "IMD historical Tamil Nadu "
+                "annual rainfall average"
+            )
         )
 
 
@@ -177,7 +317,9 @@ def recommend_crop(
         )
 
         raise HTTPException(
+
             status_code=500,
+
             detail=(
                 "Unable to generate "
                 "crop recommendation."

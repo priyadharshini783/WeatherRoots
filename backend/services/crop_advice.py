@@ -18,30 +18,46 @@ def generate_crop_advice(
     )
 
     context = f"""
-Crop recommendation result:
+Recommended Crop:
 {recommended_crop}
 
-Farm and weather conditions:
+Farm Conditions:
 
-Temperature: {temperature} °C
-Humidity: {humidity} %
-Rainfall: {rainfall} mm
-Soil type: {soil_type}
-Water availability: {water_availability}
-Previous crop: {previous_crop}
-Season: {season}
+Temperature:
+{temperature} °C
 
-Give a short, simple explanation for a farmer.
+Humidity:
+{humidity} %
 
-Do not invent exact fertilizer or pesticide dosages.
-Do not claim the crop is guaranteed to succeed.
-Mention that actual results can depend on local soil,
-weather, irrigation, and farming practices.
+Historical Annual Rainfall:
+{rainfall} mm
+
+Soil Type:
+{soil_type}
+
+Water Availability:
+{water_availability}
+
+Previous Crop:
+{previous_crop}
+
+Season:
+{season}
+
+Important Information:
+
+- The rainfall value above is a historical annual climate rainfall value.
+- It is NOT today's rainfall.
+- Current rainfall may be different.
+- Explain the recommendation using the provided farm and climate conditions.
+- Keep the explanation short and simple for farmers.
+- Do not guarantee crop success.
+- Do not invent exact fertilizer or pesticide dosages.
+- Mention that actual results can depend on local soil fertility,
+  irrigation, weather variation and farming practices.
 """
 
-    explanation = generate_farming_answer(
+    return generate_farming_answer(
         question=question,
         context=context
     )
-
-    return explanation

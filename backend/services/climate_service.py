@@ -3,6 +3,10 @@ from pathlib import Path
 import pandas as pd
 
 
+# ============================================================
+# File paths
+# ============================================================
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 RAINFALL_FILE = (
@@ -13,22 +17,57 @@ RAINFALL_FILE = (
 )
 
 
+# ============================================================
+# Historical Tamil Nadu annual rainfall
+# ============================================================
+
 def get_tamil_nadu_annual_rainfall() -> float:
     """
-    Returns the historical average annual rainfall
-    for Tamil Nadu using the IMD rainfall dataset.
+    Read the IMD rainfall CSV and return the historical
+    average annual rainfall for Tamil Nadu in millimetres.
     """
+
+    # --------------------------------------------------------
+    # Check file exists
+    # --------------------------------------------------------
 
     if not RAINFALL_FILE.exists():
         raise FileNotFoundError(
             f"Rainfall dataset not found: {RAINFALL_FILE}"
         )
 
+    # --------------------------------------------------------
+    # Load rainfall data
+    # --------------------------------------------------------
+
     rainfall_df = pd.read_csv(
         RAINFALL_FILE
     )
 
-    # Select Tamil Nadu subdivision
+    # --------------------------------------------------------
+    # Validate required columns
+    # --------------------------------------------------------
+
+    required_columns = [
+        "SUBDIVISION",
+        "ANNUAL"
+    ]
+
+    missing_columns = [
+        column
+        for column in required_columns
+        if column not in rainfall_df.columns
+    ]
+
+    if missing_columns:
+        raise ValueError(
+            f"Missing rainfall columns: {missing_columns}"
+        )
+
+    # --------------------------------------------------------
+    # Select Tamil Nadu rows
+    # --------------------------------------------------------
+
     tamil_nadu_df = rainfall_df[
         rainfall_df["SUBDIVISION"]
         .astype(str)
@@ -39,10 +78,14 @@ def get_tamil_nadu_annual_rainfall() -> float:
 
     if tamil_nadu_df.empty:
         raise ValueError(
-            "Tamil Nadu rainfall records were not found."
+            "Tamil Nadu rainfall records were not found "
+            "in the IMD dataset."
         )
 
-    # Convert ANNUAL rainfall to numeric
+    # --------------------------------------------------------
+    # Convert annual rainfall to numeric
+    # --------------------------------------------------------
+
     tamil_nadu_df["ANNUAL"] = pd.to_numeric(
         tamil_nadu_df["ANNUAL"],
         errors="coerce"
@@ -54,14 +97,19 @@ def get_tamil_nadu_annual_rainfall() -> float:
 
     if tamil_nadu_df.empty:
         raise ValueError(
-            "Tamil Nadu annual rainfall values are missing."
+            "Tamil Nadu rainfall records do not contain "
+            "valid annual rainfall values."
         )
 
-    annual_average = float(
+    # --------------------------------------------------------
+    # Historical average annual rainfall
+    # --------------------------------------------------------
+
+    average_annual_rainfall = float(
         tamil_nadu_df["ANNUAL"].mean()
     )
 
     return round(
-        annual_average,
+        average_annual_rainfall,
         2
     )
