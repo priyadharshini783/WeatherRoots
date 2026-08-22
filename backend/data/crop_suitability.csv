@@ -1,0 +1,11 @@
+crop,min_temperature,max_temperature,min_humidity,max_humidity,min_rainfall,max_rainfall,soil_types,seasons,water_requirement
+Rice,20,30,0,0,1500,2000,"Clay|Loamy|Alluvial|Black|Red","Kharif|Rabi","High"
+Maize,18,33,0,0,600,1200,"Loamy|Alluvial|Red|Black","Kharif|Rabi|Summer","Medium"
+Cotton,22,36,0,0,750,1200,"Black|Alluvial|Loamy|Red","Kharif|Rabi","Medium"
+Groundnut,22,32,0,0,600,1500,"Red|Sandy|Loamy|Alluvial","Kharif|Rabi|Summer","Low"
+Finger Millet,18,30,0,0,500,1100,"Red|Sandy|Loamy|Laterite","Kharif|Summer","Low"
+Soybean,20,33,0,0,600,1500,"Black|Loamy|Alluvial","Kharif|Rabi","Medium"
+Wheat,15,23,0,0,750,900,"Loamy|Alluvial|Black","Rabi","Medium"
+Mustard,15,28,0,0,700,2400,"Loamy|Alluvial|Sandy","Rabi","Low"
+Mung Bean,21,36,0,0,650,900,"Loamy|Red|Alluvial|Sandy","Kharif|Rabi|Summer","Low"
+Watermelon,20,35,0,0,500,700,"Sandy|Loamy|Alluvial","Summer","Medium"
