@@ -1,25 +1,62 @@
 package com.example.weatherroots.ui.voiceassistant
 
-
 import android.Manifest
 import android.content.pm.PackageManager
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,35 +71,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import androidx.core.content.ContextCompat
-
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
 fun VoiceAssistantScreen(
-
     onNavigateBack: () -> Unit,
-
-    viewModel: VoiceAssistantViewModel =
-        viewModel()
-
+    viewModel: VoiceAssistantViewModel = viewModel()
 ) {
 
-    val context =
-        LocalContext.current
+    val context = LocalContext.current
 
 
     // =========================================================
-    // BACKEND STATE
+    // ROOM + VIEWMODEL STATE
     // =========================================================
 
-    val backendResponse by
-    viewModel.response.collectAsState()
-
+    val messages by
+    viewModel.messages.collectAsState()
 
     val isLoading by
     viewModel.isLoading.collectAsState()
-
 
     val errorMessage by
     viewModel.errorMessage.collectAsState()
@@ -76,16 +105,13 @@ fun VoiceAssistantScreen(
         mutableStateOf("English")
     }
 
-
     var languageExpanded by remember {
         mutableStateOf(false)
     }
 
-
     var question by remember {
         mutableStateOf("")
     }
-
 
     var isListening by remember {
         mutableStateOf(false)
@@ -98,19 +124,12 @@ fun VoiceAssistantScreen(
 
     val speechManager =
         remember {
-
-            SpeechRecognizerManager(
-                context
-            )
+            SpeechRecognizerManager(context)
         }
-
 
     val ttsManager =
         remember {
-
-            TextToSpeechManager(
-                context
-            )
+            TextToSpeechManager(context)
         }
 
 
@@ -125,21 +144,17 @@ fun VoiceAssistantScreen(
             ContextCompat.checkSelfPermission(
                 context,
                 Manifest.permission.RECORD_AUDIO
-            ) ==
-                    PackageManager.PERMISSION_GRANTED
+            ) == PackageManager.PERMISSION_GRANTED
         )
     }
 
 
     val permissionLauncher =
         rememberLauncherForActivityResult(
-
             ActivityResultContracts.RequestPermission()
-
         ) { granted ->
 
-            hasPermission =
-                granted
+            hasPermission = granted
         }
 
 
@@ -174,10 +189,11 @@ fun VoiceAssistantScreen(
         initialValue = 1f,
 
         targetValue =
-            if (isListening)
+            if (isListening) {
                 1.12f
-            else
-                1.04f,
+            } else {
+                1.04f
+            },
 
         animationSpec =
             infiniteRepeatable(
@@ -185,16 +201,14 @@ fun VoiceAssistantScreen(
                 animation =
                     tween(
                         durationMillis = 800,
-                        easing =
-                            FastOutSlowInEasing
+                        easing = FastOutSlowInEasing
                     ),
 
                 repeatMode =
                     RepeatMode.Reverse
             ),
 
-        label =
-            "microphoneScale"
+        label = "microphoneScale"
     )
 
 
@@ -205,26 +219,20 @@ fun VoiceAssistantScreen(
     val darkGreen =
         Color(0xFF174D2A)
 
-
     val primaryGreen =
         Color(0xFF2E7D4F)
-
 
     val brightGreen =
         Color(0xFF43A047)
 
-
     val softGreen =
         Color(0xFFF1F8F2)
-
 
     val paleGreen =
         Color(0xFFE5F3E8)
 
-
     val textDark =
         Color(0xFF17231B)
-
 
     val textSecondary =
         Color(0xFF66736A)
@@ -302,11 +310,10 @@ fun VoiceAssistantScreen(
 
             ) {
 
-                Box(
 
+                Box(
                     contentAlignment =
                         Alignment.Center
-
                 ) {
 
                     Text(
@@ -319,7 +326,8 @@ fun VoiceAssistantScreen(
 
 
             Spacer(
-                Modifier.width(12.dp)
+                modifier =
+                    Modifier.width(12.dp)
             )
 
 
@@ -329,6 +337,7 @@ fun VoiceAssistantScreen(
                     Modifier.weight(1f)
 
             ) {
+
 
                 Text(
 
@@ -372,6 +381,7 @@ fun VoiceAssistantScreen(
 
             ) {
 
+
                 Row(
 
                     modifier =
@@ -385,21 +395,24 @@ fun VoiceAssistantScreen(
 
                 ) {
 
+
                     Text(
-                        "●",
+                        text = "●",
                         color = brightGreen,
                         fontSize = 12.sp
                     )
 
 
                     Spacer(
-                        Modifier.width(5.dp)
+                        modifier =
+                            Modifier.width(5.dp)
                     )
 
 
                     Text(
 
-                        "AI Online",
+                        text =
+                            "AI Online",
 
                         color =
                             darkGreen,
@@ -416,7 +429,8 @@ fun VoiceAssistantScreen(
 
 
         Spacer(
-            Modifier.height(22.dp)
+            modifier =
+                Modifier.height(22.dp)
         )
 
 
@@ -475,6 +489,7 @@ fun VoiceAssistantScreen(
 
                 Column {
 
+
                     Surface(
 
                         shape =
@@ -487,10 +502,10 @@ fun VoiceAssistantScreen(
 
                     ) {
 
+
                         Text(
 
-                            text =
-                                "🌱",
+                            text = "🌱",
 
                             fontSize =
                                 38.sp,
@@ -504,7 +519,8 @@ fun VoiceAssistantScreen(
 
 
                     Spacer(
-                        Modifier.height(18.dp)
+                        modifier =
+                            Modifier.height(18.dp)
                     )
 
 
@@ -525,7 +541,8 @@ fun VoiceAssistantScreen(
 
 
                     Spacer(
-                        Modifier.height(7.dp)
+                        modifier =
+                            Modifier.height(7.dp)
                     )
 
 
@@ -551,7 +568,8 @@ fun VoiceAssistantScreen(
 
 
         Spacer(
-            Modifier.height(24.dp)
+            modifier =
+                Modifier.height(24.dp)
         )
 
 
@@ -576,7 +594,8 @@ fun VoiceAssistantScreen(
 
 
         Spacer(
-            Modifier.height(11.dp)
+            modifier =
+                Modifier.height(11.dp)
         )
 
 
@@ -623,13 +642,14 @@ fun VoiceAssistantScreen(
 
 
                     Text(
-                        "🌐",
+                        text = "🌐",
                         fontSize = 22.sp
                     )
 
 
                     Spacer(
-                        Modifier.width(12.dp)
+                        modifier =
+                            Modifier.width(12.dp)
                     )
 
 
@@ -640,9 +660,11 @@ fun VoiceAssistantScreen(
 
                     ) {
 
+
                         Text(
 
-                            "Farmer language",
+                            text =
+                                "Farmer language",
 
                             fontSize =
                                 12.sp,
@@ -654,7 +676,8 @@ fun VoiceAssistantScreen(
 
                         Text(
 
-                            selectedLanguage,
+                            text =
+                                selectedLanguage,
 
                             fontSize =
                                 17.sp,
@@ -669,7 +692,7 @@ fun VoiceAssistantScreen(
 
 
                     Text(
-                        "⌄",
+                        text = "⌄",
                         fontSize = 24.sp,
                         color = textSecondary
                     )
@@ -691,8 +714,7 @@ fun VoiceAssistantScreen(
             ) {
 
 
-                languages.forEach {
-                        language ->
+                languages.forEach { language ->
 
 
                     DropdownMenuItem(
@@ -700,7 +722,8 @@ fun VoiceAssistantScreen(
                         text = {
 
                             Text(
-                                language
+                                text =
+                                    language
                             )
                         },
 
@@ -719,12 +742,13 @@ fun VoiceAssistantScreen(
 
 
         Spacer(
-            Modifier.height(22.dp)
+            modifier =
+                Modifier.height(22.dp)
         )
 
 
         // =====================================================
-        // QUESTION
+        // QUESTION INPUT
         // =====================================================
 
         Text(
@@ -744,7 +768,8 @@ fun VoiceAssistantScreen(
 
 
         Spacer(
-            Modifier.height(10.dp)
+            modifier =
+                Modifier.height(10.dp)
         )
 
 
@@ -761,7 +786,8 @@ fun VoiceAssistantScreen(
             placeholder = {
 
                 Text(
-                    "e.g. Which crop is best for black soil?"
+                    text =
+                        "e.g. Which crop is best for black soil?"
                 )
             },
 
@@ -796,12 +822,13 @@ fun VoiceAssistantScreen(
 
 
         Spacer(
-            Modifier.height(22.dp)
+            modifier =
+                Modifier.height(22.dp)
         )
 
 
         // =====================================================
-        // MICROPHONE AREA
+        // MICROPHONE
         // =====================================================
 
         Column(
@@ -831,9 +858,8 @@ fun VoiceAssistantScreen(
                         .clickable {
 
 
-                            if (
-                                hasPermission
-                            ) {
+                            if (hasPermission) {
+
 
                                 isListening =
                                     true
@@ -856,6 +882,7 @@ fun VoiceAssistantScreen(
                                     }
 
                             } else {
+
 
                                 permissionLauncher
                                     .launch(
@@ -883,6 +910,7 @@ fun VoiceAssistantScreen(
 
                 ) {
 
+
                     Text(
 
                         text =
@@ -896,17 +924,19 @@ fun VoiceAssistantScreen(
 
 
             Spacer(
-                Modifier.height(13.dp)
+                modifier =
+                    Modifier.height(13.dp)
             )
 
 
             Text(
 
                 text =
-                    if (isListening)
+                    if (isListening) {
                         "Listening..."
-                    else
-                        "Tap to speak",
+                    } else {
+                        "Tap to speak"
+                    },
 
                 fontSize =
                     17.sp,
@@ -915,10 +945,11 @@ fun VoiceAssistantScreen(
                     FontWeight.Bold,
 
                 color =
-                    if (isListening)
+                    if (isListening) {
                         primaryGreen
-                    else
+                    } else {
                         textDark
+                    }
             )
 
 
@@ -937,7 +968,8 @@ fun VoiceAssistantScreen(
 
 
         Spacer(
-            Modifier.height(25.dp)
+            modifier =
+                Modifier.height(25.dp)
         )
 
 
@@ -949,9 +981,31 @@ fun VoiceAssistantScreen(
 
             onClick = {
 
-                viewModel.askQuestion(
-                    question
-                )
+
+                val currentQuestion =
+                    question.trim()
+
+
+                if (
+                    currentQuestion
+                        .isNotEmpty()
+                ) {
+
+
+                    viewModel
+                        .askQuestion(
+
+                            question =
+                                currentQuestion,
+
+                            selectedLanguage =
+                                selectedLanguage
+                        )
+
+
+                    // Clear textbox after sending
+                    question = ""
+                }
             },
 
             enabled =
@@ -1001,24 +1055,28 @@ fun VoiceAssistantScreen(
 
 
                 Spacer(
-                    Modifier.width(10.dp)
+                    modifier =
+                        Modifier.width(10.dp)
                 )
 
 
                 Text(
-                    "WeatherRoots is thinking..."
+                    text =
+                        "WeatherRoots is thinking..."
                 )
 
             } else {
 
 
                 Text(
-                    "✨"
+                    text =
+                        "✨"
                 )
 
 
                 Spacer(
-                    Modifier.width(8.dp)
+                    modifier =
+                        Modifier.width(8.dp)
                 )
 
 
@@ -1041,12 +1099,12 @@ fun VoiceAssistantScreen(
         // ERROR
         // =====================================================
 
-        errorMessage?.let {
-                error ->
+        errorMessage?.let { error ->
 
 
             Spacer(
-                Modifier.height(18.dp)
+                modifier =
+                    Modifier.height(18.dp)
             )
 
 
@@ -1087,50 +1145,27 @@ fun VoiceAssistantScreen(
 
 
         // =====================================================
-        // AI RESPONSE
+        // CONVERSATION HISTORY
         // =====================================================
 
-        backendResponse?.let {
-                result ->
+        if (
+            messages.isNotEmpty()
+        ) {
 
 
             Spacer(
-                Modifier.height(22.dp)
+                modifier =
+                    Modifier.height(24.dp)
             )
 
 
-            Card(
+            Row(
 
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .border(
-                            width = 1.dp,
-                            color =
-                                Color(0xFFDDEBDD),
-                            shape =
-                                RoundedCornerShape(
-                                    24.dp
-                                )
-                        ),
+                    Modifier.fillMaxWidth(),
 
-                shape =
-                    RoundedCornerShape(
-                        24.dp
-                    ),
-
-                colors =
-                    CardDefaults.cardColors(
-
-                        containerColor =
-                            Color.White
-                    ),
-
-                elevation =
-                    CardDefaults.cardElevation(
-                        defaultElevation =
-                            3.dp
-                    )
+                verticalAlignment =
+                    Alignment.CenterVertically
 
             ) {
 
@@ -1138,199 +1173,118 @@ fun VoiceAssistantScreen(
                 Column(
 
                     modifier =
-                        Modifier.padding(
-                            20.dp
-                        )
+                        Modifier.weight(1f)
 
                 ) {
 
 
-                    Row(
+                    Text(
 
-                        verticalAlignment =
-                            Alignment.CenterVertically
+                        text =
+                            "Conversation",
 
-                    ) {
+                        fontSize =
+                            20.sp,
 
+                        fontWeight =
+                            FontWeight.Bold,
 
-                        Surface(
-
-                            shape =
-                                CircleShape,
-
-                            color =
-                                paleGreen
-
-                        ) {
-
-
-                            Text(
-
-                                text =
-                                    "🌿",
-
-                                modifier =
-                                    Modifier.padding(
-                                        10.dp
-                                    ),
-
-                                fontSize =
-                                    23.sp
-                            )
-                        }
-
-
-                        Spacer(
-                            Modifier.width(11.dp)
-                        )
-
-
-                        Column {
-
-                            Text(
-
-                                text =
-                                    "WeatherRoots AI",
-
-                                fontWeight =
-                                    FontWeight.Bold,
-
-                                fontSize =
-                                    18.sp,
-
-                                color =
-                                    textDark
-                            )
-
-
-                            Text(
-
-                                text =
-                                    "Farming advice",
-
-                                fontSize =
-                                    12.sp,
-
-                                color =
-                                    textSecondary
-                            )
-                        }
-                    }
-
-
-                    Spacer(
-                        Modifier.height(17.dp)
+                        color =
+                            textDark
                     )
 
 
                     Text(
 
                         text =
-                            result.response,
+                            "${messages.size} messages saved on this device",
 
                         fontSize =
-                            16.sp,
-
-                        lineHeight =
-                            24.sp,
+                            12.sp,
 
                         color =
-                            Color(0xFF303A33)
+                            textSecondary
                     )
-
-
-                    Spacer(
-                        Modifier.height(18.dp)
-                    )
-
-
-                    HorizontalDivider(
-
-                        color =
-                            Color(0xFFE9EFEA)
-                    )
-
-
-                    Spacer(
-                        Modifier.height(14.dp)
-                    )
-
-
-                    Row(
-
-                        modifier =
-                            Modifier.fillMaxWidth(),
-
-                        verticalAlignment =
-                            Alignment.CenterVertically
-
-                    ) {
-
-
-                        Text(
-
-                            text =
-                                "🌐 ${result.detected_language}",
-
-                            modifier =
-                                Modifier.weight(1f),
-
-                            fontSize =
-                                13.sp,
-
-                            color =
-                                textSecondary
-                        )
-
-
-                        FilledTonalButton(
-
-                            onClick = {
-
-                                ttsManager.speak(
-
-                                    result.response,
-
-                                    result.detected_language
-                                )
-                            },
-
-                            colors =
-                                ButtonDefaults
-                                    .filledTonalButtonColors(
-
-                                        containerColor =
-                                            softGreen,
-
-                                        contentColor =
-                                            primaryGreen
-                                    )
-
-                        ) {
-
-                            Text(
-                                "🔊  Listen"
-                            )
-                        }
-                    }
                 }
+
+
+                TextButton(
+
+                    onClick = {
+
+                        viewModel
+                            .clearConversation()
+                    }
+
+                ) {
+
+
+                    Text(
+
+                        text =
+                            "Clear",
+
+                        color =
+                            Color(0xFFB3261E),
+
+                        fontWeight =
+                            FontWeight.SemiBold
+                    )
+                }
+            }
+
+
+            Spacer(
+                modifier =
+                    Modifier.height(12.dp)
+            )
+
+
+            messages.forEach {
+                    message ->
+
+
+                VoiceChatBubble(
+
+                    message =
+                        message,
+
+                    onSpeak = {
+                            selectedMessage ->
+
+
+                        ttsManager.speak(
+
+                            selectedMessage.text,
+
+                            selectedMessage.language
+                        )
+                    }
+                )
+
+
+                Spacer(
+                    modifier =
+                        Modifier.height(11.dp)
+                )
             }
         }
 
 
         // =====================================================
-        // EMPTY RESPONSE PLACEHOLDER
+        // EMPTY CONVERSATION
         // =====================================================
 
         if (
-            backendResponse == null
+            messages.isEmpty()
             &&
             !isLoading
         ) {
 
 
             Spacer(
-                Modifier.height(22.dp)
+                modifier =
+                    Modifier.height(22.dp)
             )
 
 
@@ -1364,20 +1318,21 @@ fun VoiceAssistantScreen(
 
 
                     Text(
-                        "🌾",
+                        text = "🌾",
                         fontSize = 34.sp
                     )
 
 
                     Spacer(
-                        Modifier.height(8.dp)
+                        modifier =
+                            Modifier.height(8.dp)
                     )
 
 
                     Text(
 
                         text =
-                            "Your farming advice will appear here",
+                            "Start a farming conversation",
 
                         textAlign =
                             TextAlign.Center,
@@ -1391,14 +1346,15 @@ fun VoiceAssistantScreen(
 
 
                     Spacer(
-                        Modifier.height(4.dp)
+                        modifier =
+                            Modifier.height(4.dp)
                     )
 
 
                     Text(
 
                         text =
-                            "Ask about crops, soil, irrigation, weather or farming practices.",
+                            "Your questions and WeatherRoots answers will be saved on this device.",
 
                         textAlign =
                             TextAlign.Center,
@@ -1415,7 +1371,387 @@ fun VoiceAssistantScreen(
 
 
         Spacer(
-            Modifier.height(35.dp)
+            modifier =
+                Modifier.height(35.dp)
         )
+    }
+}
+
+
+// =============================================================
+// CHAT BUBBLE
+// =============================================================
+
+@Composable
+private fun VoiceChatBubble(
+
+    message:
+    VoiceChatMessage,
+
+    onSpeak:
+        (VoiceChatMessage) -> Unit
+
+) {
+
+
+    val primaryGreen =
+        Color(0xFF2E7D4F)
+
+
+    val userBubble =
+        primaryGreen
+
+
+    val aiBubble =
+        Color.White
+
+
+    val textDark =
+        Color(0xFF263129)
+
+
+    Row(
+
+        modifier =
+            Modifier.fillMaxWidth(),
+
+        horizontalArrangement =
+            if (
+                message.isUser
+            ) {
+
+                Arrangement.End
+
+            } else {
+
+                Arrangement.Start
+            }
+
+    ) {
+
+
+        Card(
+
+            modifier =
+                Modifier.widthIn(
+                    max = 315.dp
+                ),
+
+            shape =
+                RoundedCornerShape(
+
+                    topStart =
+                        20.dp,
+
+                    topEnd =
+                        20.dp,
+
+                    bottomStart =
+                        if (
+                            message.isUser
+                        ) {
+                            20.dp
+                        } else {
+                            5.dp
+                        },
+
+                    bottomEnd =
+                        if (
+                            message.isUser
+                        ) {
+                            5.dp
+                        } else {
+                            20.dp
+                        }
+                ),
+
+            colors =
+                CardDefaults.cardColors(
+
+                    containerColor =
+                        if (
+                            message.isUser
+                        ) {
+                            userBubble
+                        } else {
+                            aiBubble
+                        }
+                ),
+
+            elevation =
+                CardDefaults.cardElevation(
+
+                    defaultElevation =
+                        if (
+                            message.isUser
+                        ) {
+                            1.dp
+                        } else {
+                            3.dp
+                        }
+                )
+
+        ) {
+
+
+            Column(
+
+                modifier =
+                    Modifier.padding(
+                        15.dp
+                    )
+
+            ) {
+
+
+                // =================================================
+                // AI HEADER
+                // =================================================
+
+                if (
+                    !message.isUser
+                ) {
+
+
+                    Row(
+
+                        verticalAlignment =
+                            Alignment.CenterVertically
+
+                    ) {
+
+
+                        Surface(
+
+                            shape =
+                                CircleShape,
+
+                            color =
+                                Color(0xFFE5F3E8)
+
+                        ) {
+
+
+                            Text(
+
+                                text =
+                                    "🌿",
+
+                                modifier =
+                                    Modifier.padding(
+                                        7.dp
+                                    ),
+
+                                fontSize =
+                                    17.sp
+                            )
+                        }
+
+
+                        Spacer(
+                            modifier =
+                                Modifier.width(7.dp)
+                        )
+
+
+                        Column {
+
+
+                            Text(
+
+                                text =
+                                    "WeatherRoots AI",
+
+                                fontSize =
+                                    12.sp,
+
+                                fontWeight =
+                                    FontWeight.Bold,
+
+                                color =
+                                    primaryGreen
+                            )
+
+
+                            Text(
+
+                                text =
+                                    "Farming advice",
+
+                                fontSize =
+                                    10.sp,
+
+                                color =
+                                    Color.Gray
+                            )
+                        }
+                    }
+
+
+                    Spacer(
+                        modifier =
+                            Modifier.height(8.dp)
+                    )
+                }
+
+
+                // =================================================
+                // MESSAGE
+                // =================================================
+
+                Text(
+
+                    text =
+                        message.text,
+
+                    fontSize =
+                        15.sp,
+
+                    lineHeight =
+                        22.sp,
+
+                    color =
+                        if (
+                            message.isUser
+                        ) {
+                            Color.White
+                        } else {
+                            textDark
+                        }
+                )
+
+
+                // =================================================
+                // LANGUAGE + LISTEN
+                // =================================================
+
+                if (
+                    !message.isUser
+                ) {
+
+
+                    Spacer(
+                        modifier =
+                            Modifier.height(10.dp)
+                    )
+
+
+                    HorizontalDivider(
+                        color =
+                            Color(0xFFE8EFE9)
+                    )
+
+
+                    Spacer(
+                        modifier =
+                            Modifier.height(7.dp)
+                    )
+
+
+                    Row(
+
+                        modifier =
+                            Modifier.fillMaxWidth(),
+
+                        verticalAlignment =
+                            Alignment.CenterVertically
+
+                    ) {
+
+
+                        Text(
+
+                            text =
+                                languageLabel(
+                                    message.language
+                                ),
+
+                            fontSize =
+                                11.sp,
+
+                            color =
+                                Color.Gray,
+
+                            modifier =
+                                Modifier.weight(1f)
+                        )
+
+
+                        FilledTonalButton(
+
+                            onClick = {
+
+                                onSpeak(
+                                    message
+                                )
+                            },
+
+                            colors =
+                                ButtonDefaults
+                                    .filledTonalButtonColors(
+
+                                        containerColor =
+                                            Color(0xFFF1F8F2),
+
+                                        contentColor =
+                                            primaryGreen
+                                    ),
+
+                            contentPadding =
+                                PaddingValues(
+                                    horizontal = 12.dp,
+                                    vertical = 5.dp
+                                )
+
+                        ) {
+
+
+                            Text(
+                                text =
+                                    "🔊 Listen",
+                                fontSize =
+                                    12.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// =============================================================
+// LANGUAGE LABEL
+// =============================================================
+
+private fun languageLabel(
+    code: String
+): String {
+
+    return when (
+        code
+            .trim()
+            .lowercase()
+    ) {
+
+        "ta",
+        "tamil" ->
+            "🌐 Tamil"
+
+        "hi",
+        "hindi" ->
+            "🌐 Hindi"
+
+        "te",
+        "telugu" ->
+            "🌐 Telugu"
+
+        "kn",
+        "kannada" ->
+            "🌐 Kannada"
+
+        else ->
+            "🌐 English"
     }
 }
