@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.weatherroots.data.remote.CropRecommendationResponse
 import com.example.weatherroots.ui.RecommendationRoute
 
 
@@ -21,10 +23,14 @@ import com.example.weatherroots.ui.RecommendationRoute
 fun CropRecommendationScreen(
     args: RecommendationRoute,
     onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: CropRecommendationViewModel = viewModel()
 ) {
 
-    // Farmer-friendly inputs
+    // ---------------------------------------------------------
+    // Farmer inputs
+    // ---------------------------------------------------------
+
     var soilType by remember {
         mutableStateOf("")
     }
@@ -42,12 +48,22 @@ fun CropRecommendationScreen(
     }
 
 
-    var recommendationResult by remember {
+    // ---------------------------------------------------------
+    // Backend/ViewModel state
+    // ---------------------------------------------------------
 
-        mutableStateOf<CropRecommendationResult?>(null)
+    val isLoading by viewModel.isLoading.collectAsState()
 
-    }
+    val recommendation by
+    viewModel.recommendation.collectAsState()
 
+    val errorMessage by
+    viewModel.errorMessage.collectAsState()
+
+
+    // ---------------------------------------------------------
+    // Form validation
+    // ---------------------------------------------------------
 
     val isFormValid =
         soilType.isNotEmpty() &&
@@ -56,6 +72,57 @@ fun CropRecommendationScreen(
                 season.isNotEmpty()
 
 
+    // ---------------------------------------------------------
+    // Convert farmer-friendly soil names to backend values
+    // ---------------------------------------------------------
+
+    fun convertSoilType(
+        value: String
+    ): String {
+
+        return when (value) {
+
+            "Red Soil" -> "Red"
+
+            "Black Soil" -> "Black"
+
+            "Sandy Soil" -> "Sandy"
+
+            "Loamy Soil" -> "Loamy"
+
+            "Clay Soil" -> "Clay"
+
+            "I don't know" -> "Unknown"
+
+            else -> value
+        }
+    }
+
+
+    // ---------------------------------------------------------
+    // Convert farmer-friendly seasons to backend seasons
+    // ---------------------------------------------------------
+
+    fun convertSeason(
+        value: String
+    ): String {
+
+        return when (value) {
+
+            "Monsoon" -> "Kharif"
+
+            "Winter" -> "Rabi"
+
+            "Summer" -> "Summer"
+
+            else -> value
+        }
+    }
+
+
+    // ---------------------------------------------------------
+    // Main screen
+    // ---------------------------------------------------------
 
     Scaffold(
 
@@ -69,7 +136,6 @@ fun CropRecommendationScreen(
                         text = "Crop Recommendation",
                         fontWeight = FontWeight.Bold
                     )
-
                 },
 
                 navigationIcon = {
@@ -79,21 +145,16 @@ fun CropRecommendationScreen(
                     ) {
 
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            imageVector =
+                                Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
                         )
-
                     }
-
                 }
-
             )
-
         }
 
-
     ) { innerPadding ->
-
 
 
         Column(
@@ -106,64 +167,73 @@ fun CropRecommendationScreen(
                     rememberScrollState()
                 ),
 
+            verticalArrangement =
+                Arrangement.spacedBy(18.dp),
 
-            verticalArrangement = Arrangement.spacedBy(18.dp),
-
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment =
+                Alignment.CenterHorizontally
 
         ) {
 
 
-
-            // Weather information automatically received from dashboard
+            // -------------------------------------------------
+            // Weather information
+            // -------------------------------------------------
 
             Card(
 
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier.fillMaxWidth(),
 
-                shape = RoundedCornerShape(20.dp),
+                shape =
+                    RoundedCornerShape(20.dp),
 
-                colors = CardDefaults.cardColors(
+                colors =
+                    CardDefaults.cardColors(
 
-                    containerColor =
-                        MaterialTheme.colorScheme.primaryContainer
-
-                )
-
+                        containerColor =
+                            MaterialTheme
+                                .colorScheme
+                                .primaryContainer
+                    )
             ) {
 
 
                 Column(
 
-                    modifier = Modifier.padding(20.dp)
+                    modifier =
+                        Modifier.padding(20.dp)
 
                 ) {
 
 
-
                     Text(
 
-                        text = "🌦 Auto-filled Weather Data",
+                        text =
+                            "🌦 Auto-filled Weather Data",
 
                         fontSize = 20.sp,
 
-                        fontWeight = FontWeight.Bold,
+                        fontWeight =
+                            FontWeight.Bold,
 
                         color =
-                            MaterialTheme.colorScheme.primary
-
+                            MaterialTheme
+                                .colorScheme
+                                .primary
                     )
 
 
                     Spacer(
-                        modifier = Modifier.height(12.dp)
+                        modifier =
+                            Modifier.height(12.dp)
                     )
 
 
                     Row(
 
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier =
+                            Modifier.fillMaxWidth(),
 
                         horizontalArrangement =
                             Arrangement.SpaceBetween
@@ -175,10 +245,11 @@ fun CropRecommendationScreen(
 
                             icon = "🌡️",
 
-                            label = "Temperature",
+                            label =
+                                "Temperature",
 
-                            value = "${args.temperature}°C"
-
+                            value =
+                                "${args.temperature}°C"
                         )
 
 
@@ -186,10 +257,11 @@ fun CropRecommendationScreen(
 
                             icon = "💧",
 
-                            label = "Humidity",
+                            label =
+                                "Humidity",
 
-                            value = "${args.humidity}%"
-
+                            value =
+                                "${args.humidity}%"
                         )
 
 
@@ -197,179 +269,280 @@ fun CropRecommendationScreen(
 
                             icon = "🌧️",
 
-                            label = "Rainfall",
+                            label =
+                                "Current Rainfall",
 
-                            value = "${args.rainfall} mm"
-
+                            value =
+                                "${args.rainfall} mm"
                         )
-
                     }
-
                 }
-
             }
 
 
-
-
+            // -------------------------------------------------
+            // Heading
+            // -------------------------------------------------
 
             Text(
 
-                text = "🌱 Tell us about your farm",
+                text =
+                    "🌱 Tell us about your farm",
 
                 fontSize = 24.sp,
 
-                fontWeight = FontWeight.Bold,
+                fontWeight =
+                    FontWeight.Bold,
 
-                modifier = Modifier.fillMaxWidth()
-
+                modifier =
+                    Modifier.fillMaxWidth()
             )
-
 
 
             Text(
 
-                text = "Answer simple questions to get the best crop suggestion",
+                text =
+                    "Answer simple questions to get the best crop suggestion",
 
                 fontSize = 15.sp,
 
-                modifier = Modifier.fillMaxWidth()
-
+                modifier =
+                    Modifier.fillMaxWidth()
             )
 
 
-
-
+            // -------------------------------------------------
+            // Farmer details
+            // -------------------------------------------------
 
             FarmerDetailsCard(
 
-                soilType = soilType,
+                soilType =
+                    soilType,
 
                 onSoilSelected = {
 
                     soilType = it
-                    recommendationResult = null
 
+                    viewModel.clearResult()
                 },
 
 
-                waterAvailability = waterAvailability,
+                waterAvailability =
+                    waterAvailability,
 
                 onWaterSelected = {
 
                     waterAvailability = it
-                    recommendationResult = null
 
+                    viewModel.clearResult()
                 },
 
 
-                previousCrop = previousCrop,
+                previousCrop =
+                    previousCrop,
 
                 onCropSelected = {
 
                     previousCrop = it
-                    recommendationResult = null
 
+                    viewModel.clearResult()
                 },
 
 
-                season = season,
+                season =
+                    season,
 
                 onSeasonSelected = {
 
                     season = it
-                    recommendationResult = null
 
+                    viewModel.clearResult()
                 }
-
             )
 
 
+            // -------------------------------------------------
+            // Error message
+            // -------------------------------------------------
+
+            errorMessage?.let { message ->
+
+                Card(
+
+                    modifier =
+                        Modifier.fillMaxWidth(),
+
+                    colors =
+                        CardDefaults.cardColors(
+
+                            containerColor =
+                                MaterialTheme
+                                    .colorScheme
+                                    .errorContainer
+                        )
+                ) {
+
+                    Text(
+
+                        text = message,
+
+                        modifier =
+                            Modifier.padding(16.dp),
+
+                        color =
+                            MaterialTheme
+                                .colorScheme
+                                .onErrorContainer
+                    )
+                }
+            }
 
 
+            // -------------------------------------------------
+            // Recommendation button
+            // -------------------------------------------------
 
             Button(
 
                 onClick = {
 
-                    recommendationResult =
-                        CropRecommendationEngine.getRecommendation(
-
-                            soil = soilType,
-
-                            water = waterAvailability,
-
-                            previousCrop = previousCrop,
-
-                            season = season
-
+                    val backendSoil =
+                        convertSoilType(
+                            soilType
                         )
 
+
+                    val backendSeason =
+                        convertSeason(
+                            season
+                        )
+
+
+                    viewModel.getRecommendation(
+
+                        temperature =
+                            args.temperature.toDouble(),
+
+                        humidity =
+                            args.humidity.toDouble(),
+
+                        rainfall =
+                            args.rainfall.toDouble(),
+
+                        soilType =
+                            backendSoil,
+
+                        waterAvailability =
+                            waterAvailability,
+
+                        previousCrop =
+                            previousCrop,
+
+                        season =
+                            backendSeason
+                    )
                 },
 
-                enabled = isFormValid,
+                enabled =
+                    isFormValid &&
+                            !isLoading,
 
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
 
-                shape = RoundedCornerShape(14.dp)
+                shape =
+                    RoundedCornerShape(14.dp)
 
             ) {
 
-                Text(
 
-                    text = "🌱 Get Crop Recommendation",
+                if (isLoading) {
 
-                    fontSize = 17.sp,
+                    CircularProgressIndicator(
 
-                    fontWeight = FontWeight.Bold
+                        modifier =
+                            Modifier.size(24.dp),
 
-                )
+                        strokeWidth =
+                            3.dp,
 
+                        color =
+                            MaterialTheme
+                                .colorScheme
+                                .onPrimary
+                    )
+
+
+                    Spacer(
+                        modifier =
+                            Modifier.width(12.dp)
+                    )
+
+
+                    Text(
+                        text =
+                            "Getting Recommendation..."
+                    )
+
+                } else {
+
+                    Text(
+
+                        text =
+                            "🌱 Get Crop Recommendation",
+
+                        fontSize = 17.sp,
+
+                        fontWeight =
+                            FontWeight.Bold
+                    )
+                }
             }
-
-
-
-
-
         }
-
     }
 
 
+    // ---------------------------------------------------------
+    // Recommendation result
+    // ---------------------------------------------------------
 
-    if(recommendationResult != null){
-
+    recommendation?.let { result ->
 
         RecommendationResultDialog(
 
-            result = recommendationResult!!,
-
+            result = result,
 
             onDismiss = {
 
-                recommendationResult = null
-
+                viewModel.clearResult()
             }
-
         )
-
-
     }
-
-
 }
+
+
+// =============================================================
+// Weather Information
+// =============================================================
+
 @Composable
 private fun WeatherInfoItem(
+
     icon: String,
+
     label: String,
+
     value: String
+
 ) {
 
     Column(
 
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment =
+            Alignment.CenterHorizontally
 
     ) {
 
@@ -379,12 +552,13 @@ private fun WeatherInfoItem(
             text = icon,
 
             fontSize = 22.sp
-
         )
 
 
         Spacer(
-            modifier = Modifier.height(4.dp)
+
+            modifier =
+                Modifier.height(4.dp)
         )
 
 
@@ -392,10 +566,10 @@ private fun WeatherInfoItem(
 
             text = value,
 
-            fontWeight = FontWeight.Bold,
+            fontWeight =
+                FontWeight.Bold,
 
             fontSize = 14.sp
-
         )
 
 
@@ -404,61 +578,67 @@ private fun WeatherInfoItem(
             text = label,
 
             fontSize = 11.sp
-
         )
-
     }
-
 }
 
 
-
-
+// =============================================================
+// Farmer Details
+// =============================================================
 
 @Composable
 private fun FarmerDetailsCard(
 
     soilType: String,
 
-    onSoilSelected: (String) -> Unit,
+    onSoilSelected:
+        (String) -> Unit,
 
+    waterAvailability:
+    String,
 
-    waterAvailability: String,
+    onWaterSelected:
+        (String) -> Unit,
 
-    onWaterSelected: (String) -> Unit,
+    previousCrop:
+    String,
 
+    onCropSelected:
+        (String) -> Unit,
 
-    previousCrop: String,
+    season:
+    String,
 
-    onCropSelected: (String) -> Unit,
-
-
-    season: String,
-
-    onSeasonSelected: (String) -> Unit
+    onSeasonSelected:
+        (String) -> Unit
 
 ) {
 
 
     Card(
 
-        modifier = Modifier.fillMaxWidth(),
+        modifier =
+            Modifier.fillMaxWidth(),
 
-        shape = RoundedCornerShape(20.dp),
+        shape =
+            RoundedCornerShape(20.dp),
 
-        colors = CardDefaults.cardColors(
+        colors =
+            CardDefaults.cardColors(
 
-            containerColor =
-                MaterialTheme.colorScheme.surfaceVariant
-
-        )
-
+                containerColor =
+                    MaterialTheme
+                        .colorScheme
+                        .surfaceVariant
+            )
     ) {
 
 
         Column(
 
-            modifier = Modifier.padding(20.dp),
+            modifier =
+                Modifier.padding(20.dp),
 
             verticalArrangement =
                 Arrangement.spacedBy(16.dp)
@@ -466,131 +646,134 @@ private fun FarmerDetailsCard(
         ) {
 
 
-
             Text(
 
-                text = "🌱 Farm Details",
+                text =
+                    "🌱 Farm Details",
 
                 fontSize = 20.sp,
 
-                fontWeight = FontWeight.Bold
-
+                fontWeight =
+                    FontWeight.Bold
             )
 
 
+            // Soil type
 
             FarmerDropdown(
 
-                title = "Soil Type",
+                title =
+                    "Soil Type",
 
-                selected = soilType,
+                selected =
+                    soilType,
 
-                options = listOf(
+                options =
+                    listOf(
 
-                    "Red Soil",
+                        "Red Soil",
 
-                    "Black Soil",
+                        "Black Soil",
 
-                    "Sandy Soil",
+                        "Sandy Soil",
 
-                    "Loamy Soil",
+                        "Loamy Soil",
 
-                    "Clay Soil",
+                        "Clay Soil",
 
-                    "I don't know"
+                        "I don't know"
+                    ),
 
-                ),
-
-                onSelected = onSoilSelected
-
+                onSelected =
+                    onSoilSelected
             )
 
 
-
-
+            // Water availability
 
             FarmerDropdown(
 
-                title = "Water Availability",
+                title =
+                    "Water Availability",
 
-                selected = waterAvailability,
+                selected =
+                    waterAvailability,
 
-                options = listOf(
+                options =
+                    listOf(
 
-                    "High",
+                        "High",
 
-                    "Medium",
+                        "Medium",
 
-                    "Low"
+                        "Low"
+                    ),
 
-                ),
-
-                onSelected = onWaterSelected
-
+                onSelected =
+                    onWaterSelected
             )
 
 
-
-
+            // Previous crop
 
             FarmerDropdown(
 
-                title = "Previous Crop",
+                title =
+                    "Previous Crop",
 
-                selected = previousCrop,
+                selected =
+                    previousCrop,
 
-                options = listOf(
+                options =
+                    listOf(
 
-                    "Rice",
+                        "Rice",
 
-                    "Maize",
+                        "Maize",
 
-                    "Cotton",
+                        "Cotton",
 
-                    "Groundnut",
+                        "Groundnut",
 
-                    "First time farming"
+                        "First time farming"
+                    ),
 
-                ),
-
-                onSelected = onCropSelected
-
+                onSelected =
+                    onCropSelected
             )
 
 
-
-
+            // Season
 
             FarmerDropdown(
 
-                title = "Season",
+                title =
+                    "Season",
 
-                selected = season,
+                selected =
+                    season,
 
-                options = listOf(
+                options =
+                    listOf(
 
-                    "Summer",
+                        "Summer",
 
-                    "Monsoon",
+                        "Monsoon",
 
-                    "Winter"
+                        "Winter"
+                    ),
 
-                ),
-
-                onSelected = onSeasonSelected
-
+                onSelected =
+                    onSeasonSelected
             )
-
         }
-
     }
-
 }
 
 
-
-
-
+// =============================================================
+// Farmer Dropdown
+// =============================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -602,7 +785,8 @@ private fun FarmerDropdown(
 
     options: List<String>,
 
-    onSelected: (String) -> Unit
+    onSelected:
+        (String) -> Unit
 
 ) {
 
@@ -610,19 +794,18 @@ private fun FarmerDropdown(
     var expanded by remember {
 
         mutableStateOf(false)
-
     }
-
 
 
     ExposedDropdownMenuBox(
 
-        expanded = expanded,
+        expanded =
+            expanded,
 
         onExpandedChange = {
 
-            expanded = !expanded
-
+            expanded =
+                !expanded
         }
 
     ) {
@@ -630,60 +813,54 @@ private fun FarmerDropdown(
 
         OutlinedTextField(
 
-            value = selected,
+            value =
+                selected,
 
             onValueChange = {},
 
-            readOnly = true,
-
+            readOnly =
+                true,
 
             label = {
 
-                Text(title)
-
+                Text(
+                    title
+                )
             },
-
 
             placeholder = {
 
                 Text(
                     "Select"
                 )
-
             },
-
 
             trailingIcon = {
 
-                ExposedDropdownMenuDefaults.TrailingIcon(
+                ExposedDropdownMenuDefaults
+                    .TrailingIcon(
 
-                    expanded = expanded
-
-                )
-
+                        expanded =
+                            expanded
+                    )
             },
 
-
-            modifier = Modifier
-
-                .fillMaxWidth()
-
-                .menuAnchor()
-
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .menuAnchor()
         )
-
-
 
 
         ExposedDropdownMenu(
 
-            expanded = expanded,
-
+            expanded =
+                expanded,
 
             onDismissRequest = {
 
-                expanded = false
-
+                expanded =
+                    false
             }
 
         ) {
@@ -696,140 +873,300 @@ private fun FarmerDropdown(
 
                     text = {
 
-                        Text(item)
-
+                        Text(
+                            item
+                        )
                     },
-
 
                     onClick = {
 
+                        onSelected(
+                            item
+                        )
 
-                        onSelected(item)
-
-
-                        expanded = false
-
-
+                        expanded =
+                            false
                     }
-
                 )
-
-
             }
-
         }
-
-
     }
-
 }
 
 
-
-
-
-
+// =============================================================
+// Recommendation Result Dialog
+// =============================================================
 
 @Composable
 private fun RecommendationResultDialog(
 
-    result: CropRecommendationResult,
+    result:
+    CropRecommendationResponse,
 
-    onDismiss: () -> Unit
+    onDismiss:
+        () -> Unit
 
-){
+) {
 
 
     AlertDialog(
 
-
-        onDismissRequest = onDismiss,
-
+        onDismissRequest =
+            onDismiss,
 
         title = {
 
-
             Text(
-
-                "🌾 AI Crop Recommendation"
-
+                text =
+                    "🌾 AI Crop Recommendation"
             )
-
         },
-
 
         text = {
 
 
-            Column {
+            Column(
 
-
-                Text(
-
-                    text = "Recommended Crop",
-
-                    fontWeight = FontWeight.Bold
-
-                )
-
-
-                Spacer(
-
-                    modifier = Modifier.height(8.dp)
-
-                )
-
-
-                Text(
-
-                    text = result.cropName,
-
-                    fontSize = 28.sp,
-
-                    fontWeight = FontWeight.Black
-
-                )
-
-
-                Spacer(
-
-                    modifier = Modifier.height(12.dp)
-
-                )
-
-
-                Text(
-
-                    "Reason:\n${result.reason}\n\n" +
-                            "Advice:\n${result.advice}"
-
-                )
-
-
-            }
-
-
-        },
-
-
-        confirmButton = {
-
-
-            TextButton(
-
-                onClick = onDismiss
+                modifier =
+                    Modifier.verticalScroll(
+                        rememberScrollState()
+                    )
 
             ) {
 
 
-                Text("OK")
+                // -------------------------------------------------
+                // Recommended crop
+                // -------------------------------------------------
+
+                Text(
+
+                    text =
+                        "Recommended Crop",
+
+                    fontWeight =
+                        FontWeight.Bold
+                )
 
 
+                Spacer(
+
+                    modifier =
+                        Modifier.height(8.dp)
+                )
+
+
+                Text(
+
+                    text =
+                        result.recommended_crop,
+
+                    fontSize =
+                        28.sp,
+
+                    fontWeight =
+                        FontWeight.Black,
+
+                    color =
+                        MaterialTheme
+                            .colorScheme
+                            .primary
+                )
+
+
+                Spacer(
+
+                    modifier =
+                        Modifier.height(8.dp)
+                )
+
+
+                // -------------------------------------------------
+                // Suitability score
+                // -------------------------------------------------
+
+                Text(
+
+                    text =
+                        "Suitability Score: " +
+                                String.format(
+                                    "%.2f%%",
+                                    result.suitability_score
+                                ),
+
+                    fontWeight =
+                        FontWeight.SemiBold
+                )
+
+
+                // -------------------------------------------------
+                // Alternative crops
+                // -------------------------------------------------
+
+                if (
+                    result.alternatives
+                        .isNotEmpty()
+                ) {
+
+
+                    Spacer(
+
+                        modifier =
+                            Modifier.height(20.dp)
+                    )
+
+
+                    Text(
+
+                        text =
+                            "Alternative Crops",
+
+                        fontWeight =
+                            FontWeight.Bold
+                    )
+
+
+                    Spacer(
+
+                        modifier =
+                            Modifier.height(8.dp)
+                    )
+
+
+                    result.alternatives
+                        .forEach { alternative ->
+
+
+                            Text(
+
+                                text =
+                                    "• ${alternative.crop} — " +
+                                            String.format(
+                                                "%.2f%%",
+                                                alternative
+                                                    .suitability_score
+                                            )
+                            )
+                        }
+                }
+
+
+                // -------------------------------------------------
+                // Explanation
+                // -------------------------------------------------
+
+                Spacer(
+
+                    modifier =
+                        Modifier.height(20.dp)
+                )
+
+
+                Text(
+
+                    text =
+                        "Why this crop?",
+
+                    fontWeight =
+                        FontWeight.Bold
+                )
+
+
+                Spacer(
+
+                    modifier =
+                        Modifier.height(6.dp)
+                )
+
+
+                Text(
+
+                    text =
+                        result.explanation
+                )
+
+
+                // -------------------------------------------------
+                // Rainfall information
+                // -------------------------------------------------
+
+                Spacer(
+
+                    modifier =
+                        Modifier.height(20.dp)
+                )
+
+
+                Text(
+
+                    text =
+                        "Rainfall Information",
+
+                    fontWeight =
+                        FontWeight.Bold
+                )
+
+
+                Spacer(
+
+                    modifier =
+                        Modifier.height(6.dp)
+                )
+
+
+                Text(
+
+                    text =
+                        "Current rainfall: " +
+                                "${result.current_rainfall} mm"
+                )
+
+
+                Text(
+
+                    text =
+                        "Historical annual rainfall: " +
+                                "${result.climate_rainfall} mm"
+                )
+
+
+                Spacer(
+
+                    modifier =
+                        Modifier.height(4.dp)
+                )
+
+
+                Text(
+
+                    text =
+                        result.rainfall_source,
+
+                    fontSize =
+                        11.sp,
+
+                    color =
+                        MaterialTheme
+                            .colorScheme
+                            .onSurfaceVariant
+                )
             }
+        },
 
+        confirmButton = {
+
+            TextButton(
+
+                onClick =
+                    onDismiss
+
+            ) {
+
+                Text(
+                    "OK"
+                )
+            }
         }
-
-
     )
-
 }

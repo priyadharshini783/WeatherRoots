@@ -33,7 +33,7 @@ class TextToSpeechManager(
 
 
                     textToSpeech?.language =
-                        Locale.ENGLISH
+                        Locale.getDefault()
 
 
                     Log.d(
@@ -102,6 +102,14 @@ class TextToSpeechManager(
                     )
 
 
+                "Telugu" ->
+
+                    Locale(
+                        "te",
+                        "IN"
+                    )
+
+
                 else ->
 
                     Locale.ENGLISH
@@ -112,6 +120,10 @@ class TextToSpeechManager(
 
         val result =
             textToSpeech?.setLanguage(locale)
+        Log.d(
+            "TTS",
+            "Selected language = $language, Locale = $locale"
+        )
 
 
 
